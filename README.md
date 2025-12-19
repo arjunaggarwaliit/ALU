@@ -83,14 +83,6 @@ You will need an HDL simulator. Popular choices include:
     gtkwave dump.vcd
     ```
 
----
-
-## 📈 Future Enhancements
-- [ ] Expand data width to 32-bit or 64-bit.
-- [ ] Implement Floating Point Unit (FPU) support.
-- [ ] Add signed/unsigned arithmetic toggle.
-
----
 
 ## 👤 Author
 **Arjun Aggarwal**
