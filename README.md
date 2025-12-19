@@ -2,7 +2,7 @@
 
 This project implements an **8-bit Integer Arithmetic Logic Unit (ALU)** using **basic logic gates** in the **Digital** logic simulator by Helmut Neemann.
 
-The ALU is designed as part of **CS207 – Foundations of Computer Systems (Lab 8)** and extends the functionality of a basic ALU to support arithmetic, logical, comparison, multiplication, and division operations, strictly following the given specifications.
+The ALU is designed as part of **CS207 – Foundations of Computer Systems** and extends the functionality of a basic ALU to support arithmetic, logical, comparison, multiplication, and division operations, strictly following the given specifications.
 
 Repository Link:
 [https://github.com/arjunaggarwaliit/ALU](https://github.com/arjunaggarwaliit/ALU)
