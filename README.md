@@ -1,158 +1,187 @@
-# 8-Bit Arithmetic Logic Unit (ALU)  
-**Designed Using Logic Gates in Digital Simulator**
+# 8-bit Integer ALU (Gate-Level Implementation)
 
-**Author:** Arjun Aggarwal  
-**GitHub Repository:** https://github.com/arjunaggarwaliit/ALU  
-**Tool Used:** Digital – Logic Design and Simulation Tool (by Helmut Neemann)
+This project implements an **8-bit Integer Arithmetic Logic Unit (ALU)** using **basic logic gates** in the **Digital** logic simulator by Helmut Neemann.
 
----
+The ALU is designed as part of **CS207 – Foundations of Computer Systems (Lab 8)** and extends the functionality of a basic ALU to support arithmetic, logical, comparison, multiplication, and division operations, strictly following the given specifications.
 
-## 📌 Project Overview
-
-This project implements a **fully functional 8-bit Arithmetic Logic Unit (ALU)** built **entirely from basic digital logic gates** using the **Digital logic simulator**.  
-No HDL (Verilog/VHDL) or high-level blocks are used — every operation is constructed from fundamental components such as **AND, OR, XOR, NOT gates, multiplexers, adders, and control logic**.
-
-The objective of this project is to gain **low-level understanding of processor design**, digital arithmetic, and logical computation by manually constructing the ALU datapath and control selection logic.
+Repository Link:
+[https://github.com/arjunaggarwaliit/ALU](https://github.com/arjunaggarwaliit/ALU)
 
 ---
 
-## 🧠 What is an ALU?
+## 🔧 Tool Used
 
-An **Arithmetic Logic Unit (ALU)** is a core component of a CPU responsible for executing:
-- Arithmetic operations (addition, subtraction)
-- Logical operations (AND, OR, XOR, NOT)
-- Bitwise operations
+* **Digital – Logic Designer and Simulator**
+  [https://github.com/hneemann/Digital](https://github.com/hneemann/Digital)
 
-This ALU operates on **two 8-bit inputs** and produces an **8-bit output**, along with optional status signals.
+All components (adders, multiplexers, comparators, etc.) are built **from logic gates**, except where explicitly allowed by the lab instructions.
 
 ---
 
-## 🛠️ Tools & Technologies
+## 📌 Supported ALU Operations
 
-| Tool | Purpose |
-|-----|--------|
-| **Digital Simulator** | Designing and simulating logic circuits |
-| Logic Gates | AND, OR, XOR, NOT |
-| Combinational Circuits | Adders, multiplexers |
-| Bus Structures | 8-bit wide data paths |
+The ALU supports the following operations:
 
-
----
-
-## 🔧 ALU Architecture
-
-### Inputs
-- **A[7:0]** – First 8-bit operand
-- **B[7:0]** – Second 8-bit operand
-- **Opcode[3:0]** – Operation select signal
-
-### Outputs
-- **Result[7:0]** – Operation result
-- **Carry Out** – Carry from MSB (for arithmetic ops)
-- **Zero Flag** – Set if output is zero
+1. Addition
+2. Subtraction
+3. Bitwise NOT (of one selected input)
+4. Bitwise AND
+5. Bitwise OR
+6. Bitwise XOR
+7. Magnitude Comparison
+8. Multiplication
+9. Division
 
 ---
 
-## ⚙️ Supported Operations
+## 🧾 Inputs to the ALU
 
-| Opcode | Operation |
-|------|----------|
-| 0000 | A + B (Addition) |
-| 0001 | A − B (Subtraction) |
-| 0010 | A AND B |
-| 0011 | A OR B |
-| 0100 | A XOR B |
-| 0101 | NOT A |
-| 0110 | A NAND B |
-| 0111 | A NOR B |
+### 1. Operand Inputs
 
-> Operation selection is implemented using **multiplexers** driven by the opcode bits.
+* **Input A**: 8-bit signed number (2’s complement)
+* **Input B**: 8-bit signed number (2’s complement)
+
+### 2. Control Inputs
+
+| Signal Name | Width  | Description                               |
+| ----------- | ------ | ----------------------------------------- |
+| `Carry_in`  | 1 bit  | Carry input for addition                  |
+| `InputID`   | 1 bit  | Selects operand for NOT / divisor for DIV |
+| `OpCode`    | 4 bits | Selects the ALU operation                 |
 
 ---
 
-## 🧩 Implementation Details
+### 🔹 InputID Usage
 
-### 🔹 Arithmetic Unit
-- Built using **8 full adders** in ripple-carry configuration
-- Subtraction implemented using **2’s complement**
-  - B is inverted
-  - Carry-in set to 1
+* **NOT operation**
 
-### 🔹 Logic Unit
-- Parallel execution of:
-  - AND
-  - OR
-  - XOR
-  - NOT
-- Outputs routed to MUX
+  * `0` → NOT(Input A)
+  * `1` → NOT(Input B)
 
-### 🔹 Control Unit
-- Opcode bits select final output
-- Ensures only one operation drives the result bus
+* **Division operation**
+
+  * `0` → Input A is divisor
+  * `1` → Input B is divisor
+
+---
+
+## 🧠 Operation Selection (OpCode)
+
+The 4-bit `OpCode` determines which operation is performed.
+
+| OpCode | Operation            |
+| ------ | -------------------- |
+| `0000` | Addition             |
+| `0001` | Subtraction          |
+| `0010` | Bitwise NOT          |
+| `0011` | Bitwise AND          |
+| `0100` | Bitwise OR           |
+| `0101` | Bitwise XOR          |
+| `0110` | Magnitude Comparison |
+| `0111` | Multiplication       |
+| `1000` | Division             |
+
+(Extra opcodes are reserved for future extensions.)
+
+---
+
+## 📤 Outputs from the ALU
+
+### 1. Main Outputs
+
+| Output    | Width  | Description                        |
+| --------- | ------ | ---------------------------------- |
+| `Output0` | 8 bits | Primary ALU result                 |
+| `Output1` | 8 bits | Secondary result (used in MUL/DIV) |
+
+#### Output Interpretation:
+
+* **Addition / Subtraction**
+
+  * Result → `Output0`
+* **Multiplication**
+
+  * 16-bit result → `Output1:Output0`
+* **Division**
+
+  * Quotient → `Output0`
+  * Remainder → `Output1`
+
+---
+
+### 2. Status Flags
+
+| Flag        | Description                               |
+| ----------- | ----------------------------------------- |
+| `Carry_out` | Carry generated from addition/subtraction |
+| `Overflow`  | Signed overflow / underflow               |
+| `A = B`     | High if Input A equals Input B            |
+| `A > B`     | High if Input A greater than Input B      |
+| `A < B`     | High if Input A less than Input B         |
+| `DivByZero` | High if division by zero is attempted     |
+
+---
+
+## 🏗️ Internal Design Overview
+
+The ALU is composed of the following gate-level modules:
+
+* **Full Adder** (built using logic gates and reused for 8-bit addition)
+* **Adder/Subtractor Unit**
+* **Bitwise Logic Unit (AND, OR, XOR, NOT)**
+* **Magnitude Comparator**
+* **Multiplier Unit**
+* **Divider Unit**
+* **Multiplexers / Demultiplexers**
+* **Control Logic (Decoder for OpCode)**
+
+All modules are designed manually using **basic logic gates**, following lab constraints.
 
 ---
 
 ## ▶️ How to Run the Project
 
-### Step 1: Install Digital Simulator
-Download from:  
-https://github.com/hneemann/Digital
+1. Install **Digital** simulator from:
+   [https://github.com/hneemann/Digital](https://github.com/hneemann/Digital)
 
-### Step 2: Open the Project
-1. Launch **Digital**
-2. Go to **File → Open**
-3. Load `circuits/ALU_8bit.dig`
+2. Clone the repository:
 
-### Step 3: Simulate
-- Set input values using switches
-- Choose opcode
-- Observe output LEDs and flags
+   ```bash
+   git clone https://github.com/arjunaggarwaliit/ALU.git
+   ```
 
----
+3. Open the `.dig` file in Digital.
 
-## 🧪 Testing
+4. Set:
 
-- Separate test circuits provided in the `tests/` directory
-- Each operation is verified independently
-- Edge cases such as overflow and zero output tested
+   * Input A and Input B (8-bit switches)
+   * OpCode (4-bit control)
+   * Carry_in and InputID
 
----
+5. Observe:
 
-## 🎯 Learning Outcomes
-
-- Deep understanding of **ALU internals**
-- Practical experience with:
-  - Combinational logic design
-  - Bus-based architectures
-  - Control signal routing
-- Foundation for building:
-  - Simple CPU
-  - Instruction decoder
-  - Datapath architecture
+   * Output0, Output1
+   * Status flags
 
 ---
 
-## 🚀 Possible Extensions
+## 📚 Notes
 
-- Add **shift operations** (LSL, LSR, ASR)
-- Implement **signed overflow detection**
-- Integrate with a **register file**
-- Build a complete **8-bit CPU**
+* All numbers are represented in **2’s complement**.
+* Overflow is detected for signed arithmetic.
+* Division by zero is safely handled using a dedicated flag.
+* Design strictly follows **CS207 Lab 8 specifications**.
+
+---
+
+## 👤 Author
+
+**Arjun Aggarwal**
+B.Tech, Mathematics and Computing
+IIT Ropar
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **MIT License**.  
-You are free to use, modify, and distribute it.
-
----
-
-## 📬 Contact
-
-**Arjun Aggarwal**  
-B.Tech – Artificial Intelligence & Data Engineering 
-IIT Ropar  
-GitHub: https://github.com/arjunaggarwaliit
-
----
+This project is intended for **academic and educational use only**.
