@@ -1,92 +1,158 @@
-# 16-Bit Arithmetic Logic Unit (ALU)
+# 8-Bit Arithmetic Logic Unit (ALU)  
+**Designed Using Logic Gates in Digital Simulator**
 
-A comprehensive implementation of a 16-bit **Arithmetic Logic Unit (ALU)** written in Verilog. This project demonstrates the core computational engine of a processor, capable of performing arithmetic, logical, and comparison operations.
-
----
-
-## 🚀 Project Overview
-
-The ALU is a fundamental component of the Central Processing Unit (CPU). This specific implementation takes two 16-bit inputs and processes them based on a 4-bit selection code (`ALU_Sel`). It is designed to be synthesizable for FPGA deployment and includes a robust testbench for functional verification.
-
-### Key Features
-* **16-bit Data Path:** Processes two 16-bit operands ($A$ and $B$).
-* **16 Operations:** Includes standard arithmetic, bitwise logic, shifts, and comparisons.
-* **Status Flags:** Real-time monitoring of result states:
-    * **CarryOut:** Indicates an overflow in arithmetic operations.
-    * **Zero:** High if the result is exactly $0$.
-    * **Negative:** High if the most significant bit (MSB) is $1$.
+**Author:** Arjun Aggarwal  
+**GitHub Repository:** https://github.com/arjunaggarwaliit/ALU  
+**Tool Used:** Digital – Logic Design and Simulation Tool (by Helmut Neemann)
 
 ---
 
-## 🛠 Supported Operations
+## 📌 Project Overview
 
-The ALU behavior is controlled by the `ALU_Sel` input:
+This project implements a **fully functional 8-bit Arithmetic Logic Unit (ALU)** built **entirely from basic digital logic gates** using the **Digital logic simulator**.  
+No HDL (Verilog/VHDL) or high-level blocks are used — every operation is constructed from fundamental components such as **AND, OR, XOR, NOT gates, multiplexers, adders, and control logic**.
 
-| ALU_Sel | Operation | Description |
-| :--- | :--- | :--- |
-| **0000** | **Addition** | $A + B$ |
-| **0001** | **Subtraction** | $A - B$ |
-| **0010** | **Multiplication** | $A \times B$ |
-| **0011** | **Division** | $A / B$ |
-| **0100** | **Left Shift** | $A \ll 1$ |
-| **0101** | **Right Shift** | $A \gg 1$ |
-| **0110** | **Rotate Left** | Circular shift left |
-| **0111** | **Rotate Right** | Circular shift right |
-| **1000** | **AND** | Bitwise AND |
-| **1001** | **OR** | Bitwise OR |
-| **1010** | **XOR** | Bitwise XOR |
-| **1011** | **NOR** | Bitwise NOR |
-| **1100** | **NAND** | Bitwise NAND |
-| **1101** | **XNOR** | Bitwise XNOR |
-| **1110** | **Greater Than** | $1$ if $A > B$, else $0$ |
-| **1111** | **Equal** | $1$ if $A == B$, else $0$ |
+The objective of this project is to gain **low-level understanding of processor design**, digital arithmetic, and logical computation by manually constructing the ALU datapath and control selection logic.
 
 ---
 
-## 📂 Repository Structure
+## 🧠 What is an ALU?
 
-* `ALU.v`: The main hardware module containing the combinational logic.
-* `testbench.v`: A test script that applies stimulus to the ALU and monitors outputs.
-* `README.md`: Project documentation.
+An **Arithmetic Logic Unit (ALU)** is a core component of a CPU responsible for executing:
+- Arithmetic operations (addition, subtraction)
+- Logical operations (AND, OR, XOR, NOT)
+- Bitwise operations
+
+This ALU operates on **two 8-bit inputs** and produces an **8-bit output**, along with optional status signals.
 
 ---
 
-## 💻 Getting Started
+## 🛠️ Tools & Technologies
 
-### Prerequisites
-You will need an HDL simulator. Popular choices include:
-* **Icarus Verilog** (Open Source)
-* **ModelSim / QuestaSim**
-* **Vivado Design Suite**
-
-### How to Run (Icarus Verilog)
-
-1.  **Clone the Repo:**
-    ```bash
-    git clone [https://github.com/arjunaggarwaliit/ALU.git](https://github.com/arjunaggarwaliit/ALU.git)
-    cd ALU
-    ```
-
-2.  **Compile:**
-    ```bash
-    iverilog -o alu_sim ALU.v testbench.v
-    ```
-
-3.  **Simulate:**
-    ```bash
-    vvp alu_sim
-    ```
-
-4.  **Visualize:**
-    If your testbench generates a `.vcd` file, open it in GTKWave:
-    ```bash
-    gtkwave dump.vcd
-    ```
+| Tool | Purpose |
+|-----|--------|
+| **Digital Simulator** | Designing and simulating logic circuits |
+| Logic Gates | AND, OR, XOR, NOT |
+| Combinational Circuits | Adders, multiplexers |
+| Bus Structures | 8-bit wide data paths |
 
 
-## 👤 Author
-**Arjun Aggarwal**
-* GitHub: [@arjunaggarwaliit](https://github.com/arjunaggarwaliit)
+---
+
+## 🔧 ALU Architecture
+
+### Inputs
+- **A[7:0]** – First 8-bit operand
+- **B[7:0]** – Second 8-bit operand
+- **Opcode[3:0]** – Operation select signal
+
+### Outputs
+- **Result[7:0]** – Operation result
+- **Carry Out** – Carry from MSB (for arithmetic ops)
+- **Zero Flag** – Set if output is zero
+
+---
+
+## ⚙️ Supported Operations
+
+| Opcode | Operation |
+|------|----------|
+| 0000 | A + B (Addition) |
+| 0001 | A − B (Subtraction) |
+| 0010 | A AND B |
+| 0011 | A OR B |
+| 0100 | A XOR B |
+| 0101 | NOT A |
+| 0110 | A NAND B |
+| 0111 | A NOR B |
+
+> Operation selection is implemented using **multiplexers** driven by the opcode bits.
+
+---
+
+## 🧩 Implementation Details
+
+### 🔹 Arithmetic Unit
+- Built using **8 full adders** in ripple-carry configuration
+- Subtraction implemented using **2’s complement**
+  - B is inverted
+  - Carry-in set to 1
+
+### 🔹 Logic Unit
+- Parallel execution of:
+  - AND
+  - OR
+  - XOR
+  - NOT
+- Outputs routed to MUX
+
+### 🔹 Control Unit
+- Opcode bits select final output
+- Ensures only one operation drives the result bus
+
+---
+
+## ▶️ How to Run the Project
+
+### Step 1: Install Digital Simulator
+Download from:  
+https://github.com/hneemann/Digital
+
+### Step 2: Open the Project
+1. Launch **Digital**
+2. Go to **File → Open**
+3. Load `circuits/ALU_8bit.dig`
+
+### Step 3: Simulate
+- Set input values using switches
+- Choose opcode
+- Observe output LEDs and flags
+
+---
+
+## 🧪 Testing
+
+- Separate test circuits provided in the `tests/` directory
+- Each operation is verified independently
+- Edge cases such as overflow and zero output tested
+
+---
+
+## 🎯 Learning Outcomes
+
+- Deep understanding of **ALU internals**
+- Practical experience with:
+  - Combinational logic design
+  - Bus-based architectures
+  - Control signal routing
+- Foundation for building:
+  - Simple CPU
+  - Instruction decoder
+  - Datapath architecture
+
+---
+
+## 🚀 Possible Extensions
+
+- Add **shift operations** (LSL, LSR, ASR)
+- Implement **signed overflow detection**
+- Integrate with a **register file**
+- Build a complete **8-bit CPU**
+
+---
 
 ## 📜 License
-This project is open-source and available under the [MIT License](LICENSE).
+
+This project is licensed under the **MIT License**.  
+You are free to use, modify, and distribute it.
+
+---
+
+## 📬 Contact
+
+**Arjun Aggarwal**  
+B.Tech – Artificial Intelligence & Data Engineering 
+IIT Ropar  
+GitHub: https://github.com/arjunaggarwaliit
+
+---
