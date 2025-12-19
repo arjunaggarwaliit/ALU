@@ -170,14 +170,13 @@ All modules are designed manually using **basic logic gates**, following lab con
 * All numbers are represented in **2’s complement**.
 * Overflow is detected for signed arithmetic.
 * Division by zero is safely handled using a dedicated flag.
-* Design strictly follows **CS207 Lab 8 specifications**.
 
 ---
 
 ## 👤 Author
 
 **Arjun Aggarwal**
-B.Tech, Mathematics and Computing
+B.Tech, Artificial Intelligence & Data Engineering
 IIT Ropar
 
 ---
