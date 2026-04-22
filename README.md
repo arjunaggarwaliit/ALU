@@ -9,7 +9,7 @@ Repository Link:
 
 ---
 
-## 🔧 Tool Used
+## Tool Used
 
 * **Digital – Logic Designer and Simulator**
   [https://github.com/hneemann/Digital](https://github.com/hneemann/Digital)
@@ -18,7 +18,7 @@ All components (adders, multiplexers, comparators, etc.) are built **from logic 
 
 ---
 
-## 📌 Supported ALU Operations
+## Supported ALU Operations
 
 The ALU supports the following operations:
 
@@ -34,7 +34,7 @@ The ALU supports the following operations:
 
 ---
 
-## 🧾 Inputs to the ALU
+## Inputs to the ALU
 
 ### 1. Operand Inputs
 
@@ -51,7 +51,7 @@ The ALU supports the following operations:
 
 ---
 
-### 🔹 InputID Usage
+### InputID Usage
 
 * **NOT operation**
 
@@ -65,7 +65,7 @@ The ALU supports the following operations:
 
 ---
 
-## 🧠 Operation Selection (OpCode)
+## Operation Selection (OpCode)
 
 The 4-bit `OpCode` determines which operation is performed.
 
@@ -85,7 +85,7 @@ The 4-bit `OpCode` determines which operation is performed.
 
 ---
 
-## 📤 Outputs from the ALU
+## Outputs from the ALU
 
 ### 1. Main Outputs
 
@@ -122,7 +122,7 @@ The 4-bit `OpCode` determines which operation is performed.
 
 ---
 
-## 🏗️ Internal Design Overview
+## Internal Design Overview
 
 The ALU is composed of the following gate-level modules:
 
@@ -139,7 +139,7 @@ All modules are designed manually using **basic logic gates**, following lab con
 
 ---
 
-## ▶️ How to Run the Project
+## How to Run the Project
 
 1. Install **Digital** simulator from:
    [https://github.com/hneemann/Digital](https://github.com/hneemann/Digital)
@@ -163,24 +163,3 @@ All modules are designed manually using **basic logic gates**, following lab con
    * Output0, Output1
    * Status flags
 
----
-
-## 📚 Notes
-
-* All numbers are represented in **2’s complement**.
-* Overflow is detected for signed arithmetic.
-* Division by zero is safely handled using a dedicated flag.
-
----
-
-## 👤 Author
-
-**Arjun Aggarwal**
-B.Tech, Artificial Intelligence & Data Engineering
-IIT Ropar
-
----
-
-## 📜 License
-
-This project is intended for **academic and educational use only**.
